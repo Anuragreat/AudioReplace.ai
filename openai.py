@@ -12,7 +12,7 @@ OPENAI_ENDPOINT = "https://internshala.openai.azure.com/openai/deployments/gpt-4
 
 AZURE_WHISPER_ENDPOINT = "https://curio-m22u9hu0-swedencentral.openai.azure.com/openai/deployments/whisper/audio/translations?api-version=2024-06-01"
 
-def transcribe_audio_with_timestamps(audio_file):
+def transcribe_audio(audio_file):
     headers = {
         "api-key": AZURE_API_KEY,
     }
@@ -37,20 +37,6 @@ def transcribe_audio_with_timestamps(audio_file):
         st.error("Error: Transcription text not found in response.")
         return None
 
-
-def process_timestamps(transcriptions):
-    speaking_segments = []
-    
-   
-    if 'segments' in transcriptions:
-        for segment in transcriptions['segments']:
-            start = segment['start']
-            end = segment['end']
-            speaking_segments.append((start, end))
-    else:
-        st.error("No 'segments' found in the transcriptions.")
-    
-    return speaking_segments
 
 def correct_transcription(transcription):
     headers = {
@@ -127,7 +113,7 @@ def main():
             return
         
        
-        transcriptions = transcribe_audio_with_timestamps("uploaded_audio.wav")
+        transcriptions = transcribe_audio("uploaded_audio.wav")
         
        
         if transcriptions is None:
